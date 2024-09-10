@@ -1,0 +1,37 @@
+<div class="component-wrapper">
+    <div class="field">
+        <label class="label" for="tab"><span data-bind="i18n: 'New Tab'"></span></label>
+        <div class="control">
+            <input name="tabname"
+                   id="tabname"
+                   type="text"
+                   class="input-text"
+                   data-bind="value: tabData">
+        </div>
+        <button type="button" class="action action-login secondary" data-bind="click: addNewTab">
+            <span data-bind="i18n: 'Save'"></span>
+        </button>
+    </div>
+   
+    <div class="tab-list" style="width: 20%;background: gray;margin-top: 10px;" data-bind="foreach: tabName">
+        <li data-bind="text: name"></li>
+    </div>
+</div>
+<table class="data table base list">
+<h2> Tab List</h2>
+<hr>
+    <thead>
+
+        <tr data-bind="foreach: columns">
+        <th data-bind="text: headerText"></th>
+        
+        </tr>
+        
+        </thead>
+    <tbody data-bind="foreach: items">
+        <tr>
+            <td data-bind="text: tab_name"></td>
+        </tr>
+    </tbody>
+</table>
+ 

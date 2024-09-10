@@ -1,0 +1,92 @@
+<button id="modal-event" class="action primary">Support</button>
+
+<!-- Hidden form for email and comment -->
+<div id="email-comment-form" style="display: none;">
+    <div class="field">
+        <label for="customer-email-support" class="label"><span>Email:</span></label>
+        <div class="control">
+            <input type="email" id="customer-email-support" name="customer-email" required>
+        </div>
+    </div>
+    <div class="field">
+        <label for="comment-support" class="label"><span>Comment:</span></label>
+        <div class="control">
+            <textarea id="comment-support" name="comment" required></textarea>
+        </div>
+    </div>
+</div>
+
+<script>
+    require([
+        'jquery',
+        'Magento_Ui/js/modal/modal',
+        'mage/translate',
+        'mage/storage',
+        'Magento_Customer/js/customer-data',
+        'Magento_Customer/js/model/customer',
+        'Magento_Customer/js/model/customer/address'
+    ], function($, modal, $t, storage, customerData, customer, address) {
+        $(document).ready(function() {
+            var options = {
+                type: 'popup',
+                responsive: true,
+                innerScroll: true,
+                buttons: [{
+                    text: $.mage.__('Submit'),
+                    class: 'submit-button',
+                    click: function() {
+                        var email = $('#customer-email-support').val();
+                        var comment = $('#comment-support').val();
+                        if (email && comment) {
+                            
+                            var requestData = {
+                                email: email,
+                                comment: comment
+                            };
+                            $.ajax({
+                                type: "POST",
+                                url: "ten/index/sendemail",
+                                data: requestData,
+                                cache: false,
+                                success: function(data){
+                                    if (response.success) {
+                                    alert($t('Email sent successfully.'));
+                                    } else {
+                                        alert($t('Failed to send email. Please try again later.'));
+                                    }
+                                },
+                                fail: function(jqXHR, textStatus) {
+                                    alert( "Request failed: " + textStatus );
+                                }
+                            });
+
+
+
+
+                            // storage.post(
+                            //     'ten/index/sendemail', 
+                            //     JSON.stringify(requestData),
+                            //     false
+                            // ).done(function(response) {
+                            //     if (response.success) {
+                            //         alert($t('Email sent successfully.'));
+                            //     } else {
+                            //         alert($t('Failed to send email. Please try again later.'));
+                            //     }
+                            // }).fail(function() {
+                            //     alert($t('An error occurred while sending the email.'));
+                            // });
+                        } else {
+                            alert($t('Please fill in all required fields.'));
+                        }
+                    }
+                }]
+            };
+
+            var popup = modal(options, $('#email-comment-form'));
+            $('#modal-event').on('click', function() {
+                $('#email-comment-form').modal('openModal');
+            });
+        });
+    });
+</script>
